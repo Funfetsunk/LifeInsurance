@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MarkEmbling.PostcodesIO</id>
+    <version>0.0.1.0</version>
+    <title>MarkEmbling.PostcodesIO</title>
+    <authors>Mark Embling</authors>
+    <owners>Mark Embling</owners>
+    <licenseUrl>https://raw.github.com/markembling/MarkEmbling.PostcodesIO/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/markembling/MarkEmbling.PostcodesIO</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for interacting with the excellent Postcodes.io service.</description>
+    <summary />
+    <copyright>Copyright © Mark Embling 2015</copyright>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+      <dependency id="RestSharp" version="105.1.0" />
+    </dependencies>
+  </metadata>
+</package>
