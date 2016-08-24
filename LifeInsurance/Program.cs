@@ -125,7 +125,7 @@ namespace LifeInsurance
                     TotalPremium = TotalPremium + 50.00;
                     break;
 
-                case "Northen Ireland":
+                case "Northern Ireland":
                     TotalPremium = TotalPremium + 75.00;
                     break;
 
