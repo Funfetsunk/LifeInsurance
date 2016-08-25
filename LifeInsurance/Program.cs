@@ -314,7 +314,7 @@ namespace LifeInsurance
             wrGETURL.Method = "GET";
             // Setup proxy settings
             WebProxy prox = new WebProxy();
-            Uri uri = new Uri("http://peg-proxy01:80");
+            Uri uri = new Uri("PROXY ADDRESS");
             prox.Address = uri;
             // prox.Credentials = new System.Net.NetworkCredential("USERNAME", "PASSWORD", "INSURANCE");
             wrGETURL.Proxy = prox;
