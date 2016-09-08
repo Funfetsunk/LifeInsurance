@@ -17,7 +17,7 @@ namespace LifeInsurance
             public string Children { get; set; }
 
             // Capture and validate client age.
-            public static int CaptureAge(string DateOfBirth)
+            public int CaptureAge(string DateOfBirth)
             {
                 bool Redisp = true;
                 DateTime dateofbirth;
@@ -43,7 +43,7 @@ namespace LifeInsurance
             }
             
             // Capture and validate client gender
-            public static string CaptureGender(String Gender)
+            public string CaptureGender(String Gender)
             {
                 bool Redisplay = true;
 
@@ -73,7 +73,7 @@ namespace LifeInsurance
             }
 
             // Capture and validate smoker details.
-            public static string CaptureSmoker(String Smoker)
+            public string CaptureSmoker(String Smoker)
             {
                 bool Redisplay = true;
 
@@ -101,8 +101,8 @@ namespace LifeInsurance
                 return Smoker;
             }
             
-            // Capture and validate client eercise details
-            public static string CaptureExercise(string Exercise)
+            // Capture and validate client exercise details
+            public string CaptureExercise(string Exercise)
             {
                 bool Redisplay = true;
                 int exercise;
@@ -124,7 +124,7 @@ namespace LifeInsurance
             }
 
             // Capture and validate children details
-            public static string CaptureChildren(string Children)
+            public string CaptureChildren(string Children)
             {
                 bool Redisplay = true;
 

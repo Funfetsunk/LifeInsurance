@@ -42,12 +42,34 @@ namespace LifeInsurance
                 country = (string)token.SelectToken("result.country");
                 return country;
             }
-            catch (Exception ex)
+
+            catch (WebException ex)
             {
                 Console.Clear();
+                HttpWebResponse result = (HttpWebResponse)ex.Response;
+                
                 Console.WriteLine("The following error occured.");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Exiting application");
+
+                switch (result.StatusCode)
+                {
+                    case HttpStatusCode.BadRequest:
+                        Console.WriteLine((int)result.StatusCode + " " + result.StatusCode);
+                        break;
+                    case HttpStatusCode.NotFound:
+                        Console.WriteLine((int)result.StatusCode + " " + result.StatusCode);
+                        break;
+                    case HttpStatusCode.RequestTimeout:
+                        Console.WriteLine((int)result.StatusCode + " " + result.StatusCode);
+                        break;
+                    default:
+                        Console.WriteLine((int)result.StatusCode + " " + result.StatusCode);
+                        break;
+                }
+
+                Console.ReadLine();
+                
+
+
                 Console.ReadLine();
                 Environment.Exit(0);
             }

@@ -20,12 +20,12 @@ namespace LifeInsurance
 
             // User Age
             Console.WriteLine("What is your date of birth (DD/MM/YYYY)?");
-            NewClient.Age = Client.CaptureAge(Console.ReadLine());
+            NewClient.Age = NewClient.CaptureAge(Console.ReadLine());
             Console.WriteLine("");
 
             //User Gender
             Console.WriteLine("What is your gender? (M/F)");
-            NewClient.Gender = Client.CaptureGender(Console.ReadLine());
+            NewClient.Gender = NewClient.CaptureGender(Console.ReadLine());
             Console.WriteLine("");
 
             // Capture postcode and convert to country
@@ -35,17 +35,17 @@ namespace LifeInsurance
 
             // Capture smoking details
             Console.WriteLine("Are you a smoker? (enter Y/N)");
-            NewClient.Smoker = Client.CaptureSmoker(Console.ReadLine());
+            NewClient.Smoker = NewClient.CaptureSmoker(Console.ReadLine());
             Console.WriteLine("");
 
             // Capture exercise details
             Console.WriteLine("How many hours exercise do you do per week?");
-            NewClient.HoursOfExercise = Convert.ToInt32(Client.CaptureExercise(Console.ReadLine()));
+            NewClient.HoursOfExercise = Convert.ToInt32(NewClient.CaptureExercise(Console.ReadLine()));
             Console.WriteLine("");
 
             // Capture children details
             Console.WriteLine("Do you have any children? (enter Y/N)");
-            NewClient.Children = Client.CaptureChildren(Console.ReadLine());
+            NewClient.Children = NewClient.CaptureChildren(Console.ReadLine());
             Console.WriteLine("");
 
             // Calculate Price
