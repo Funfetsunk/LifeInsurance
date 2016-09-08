@@ -20,32 +20,32 @@ namespace LifeInsurance
 
             // User Age
             Console.WriteLine("What is your date of birth (DD/MM/YYYY)?");
-            NewClient.Age = CalculateAge(Console.ReadLine());
+            NewClient.Age = Client.CaptureAge(Console.ReadLine());
             Console.WriteLine("");
 
             //User Gender
             Console.WriteLine("What is your gender? (M/F)");
-            NewClient.Gender = CaptureGender(Console.ReadLine());
+            NewClient.Gender = Client.CaptureGender(Console.ReadLine());
             Console.WriteLine("");
 
             // Capture postcode and convert to country
             Console.WriteLine("What is your post code?");
-            NewClient.Country = PostCodeLookup(Console.ReadLine());
+            NewClient.Country = Postcode.LookupCountry(Console.ReadLine());
             Console.WriteLine("");
 
             // Capture smoking details
             Console.WriteLine("Are you a smoker? (enter Y/N)");
-            NewClient.Smoker = CaptureSmoker(Console.ReadLine());
+            NewClient.Smoker = Client.CaptureSmoker(Console.ReadLine());
             Console.WriteLine("");
 
             // Capture exercise details
             Console.WriteLine("How many hours exercise do you do per week?");
-            NewClient.HoursOfExercise = Convert.ToInt32(CaptureExercise(Console.ReadLine()));
+            NewClient.HoursOfExercise = Convert.ToInt32(Client.CaptureExercise(Console.ReadLine()));
             Console.WriteLine("");
 
             // Capture children details
             Console.WriteLine("Do you have any children? (enter Y/N)");
-            NewClient.Children = CaptureChildren(Console.ReadLine());
+            NewClient.Children = Client.CaptureChildren(Console.ReadLine());
             Console.WriteLine("");
 
             // Calculate Price
@@ -125,184 +125,6 @@ namespace LifeInsurance
             // Ensure screen is displayed.
             Console.ReadLine();
         }
-   
-
-        public static int CalculateAge(String DateOfBirth)
-        {
-            bool Redisp = true;
-            DateTime dateofbirth;
-            int Age = 0;
-            while (Redisp)
-            {
-                if (DateTime.TryParse(DateOfBirth, out dateofbirth))
-                {
-                    Redisp = false;
-
-                    Age = DateTime.Now.Year - dateofbirth.Year;
-                    if (DateTime.Now.DayOfYear < dateofbirth.DayOfYear)
-                        Age = Age - 1;
-                }
-                else
-                {
-                    Console.WriteLine("Please use format \"DD/MM/YYY\"");
-                    Console.WriteLine("What is your date of birth (DD/MM/YYY)?");
-                    DateOfBirth = Console.ReadLine();
-                }
-            }
-            return Age;
-        }
-
-        public static string PostCodeLookup(String PostCodeURL)
-        {
-            string PostCodeLookupURL = ("https://api.postcodes.io/postcodes/" + PostCodeURL);
-            string country = ("");
-            // Setup http call
-            WebRequest wrGETURL;
-            wrGETURL = WebRequest.Create(PostCodeLookupURL);
-            wrGETURL.Method = "GET";
-            // Setup proxy settings
-            WebProxy prox = new WebProxy();
-            Uri uri = new Uri("http://peg-proxy01:80");
-            prox.Address = uri;
-            // prox.Credentials = new System.Net.NetworkCredential("USERNAME", "PASSWORD", "INSURANCE");
-            wrGETURL.Proxy = prox;
-
-            // Make request
-
-            try
-            {
-                Stream objStream;
-                objStream = wrGETURL.GetResponse().GetResponseStream();
-                // Parse return, extract Status and Country
-                StreamReader reader = new StreamReader(objStream);
-                string json = reader.ReadToEnd();
-                JToken token = JObject.Parse(json);
-
-                int Status = (int)token.SelectToken("status");
-                // Populate NewClient instance with country.
-                country = (string)token.SelectToken("result.country");
-                return country;
-            }
-            catch (Exception ex)
-            {
-                Console.Clear();
-                Console.WriteLine("The following error occured.");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Exiting application");
-                Console.ReadLine();
-                Environment.Exit(0);
-            }
-
-            return country;
-        }
-
-        public static string CaptureGender(String Gender)
-        {
-            bool Redisplay = true;
-
-            while (Redisplay)
-            {
-                Gender = Gender.ToUpper();
-                switch (Gender)
-                {
-                    case "M":
-                        Redisplay = false;
-                        break;
-
-                    case "F":
-                        Redisplay = false;
-                        break;
-
-                    default:
-                        Redisplay = true;
-                        Console.WriteLine("Please enter M or F.");
-                        Console.WriteLine("What is your gender? (M/F)");
-                        Gender = Console.ReadLine();
-                        break;
-                }
-            }
-
-            return Gender;
-        }
-
-
-
-        public static string CaptureSmoker(String Smoker)
-        {
-            bool Redisplay = true;
-
-            while (Redisplay)
-            {
-                Smoker = Smoker.ToUpper();
-                switch (Smoker)
-                {
-                    case "Y":
-                        Redisplay = false;
-                        break;
-
-                    case "N":
-                        Redisplay = false;
-                        break;
-
-                    default:
-                        Redisplay = true;
-                        Console.WriteLine("Please enter Y or N.");
-                        Console.WriteLine("Are you a smoker? (enter Y/N)");
-                        Smoker = Console.ReadLine();
-                        break;
-                }
-            }
-            return Smoker;
-        }
-
-        public static string CaptureExercise(string Exercise)
-        {
-            bool Redisplay = true;
-            int exercise;
-            while (Redisplay)
-            {
-                if (int.TryParse(Exercise, out exercise))
-                {
-                    Redisplay = false;
-                }
-                else
-                {
-                    Redisplay = true;
-                    Console.WriteLine("Please enter a whole number");
-                    Console.WriteLine("How many hours exercise do you do per week?");
-                    Exercise = Console.ReadLine();
-                }
-            }
-            return Exercise;
-        }
-
-        public static string CaptureChildren(string Children)
-        {
-            bool Redisplay = true;
-
-            while (Redisplay)
-            {
-                Children = Children.ToUpper();
-                switch (Children)
-                {
-                    case "Y":
-                        Redisplay = false;
-                        break;
-
-                    case "N":
-                        Redisplay = false;
-                        break;
-
-                    default:
-                        Redisplay = true;
-                        Console.WriteLine("Please enter Y or N.");
-                        Console.WriteLine("Do you have any children? (enter Y/N)");
-                        Children = Console.ReadLine();
-                        break;
-                }
-            }
-            return Children;
-        }
-                   
+                  
     }
 }
