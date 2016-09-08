@@ -3,11 +3,12 @@ using System;
 using System.IO;
 using System.Net;
 
+
 namespace LifeInsurance
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("LIFE INSURANCE QUOTE");
@@ -16,6 +17,7 @@ namespace LifeInsurance
             Client NewClient = new Client();
 
             // Capture user details.
+
             // User Age
             Console.WriteLine("What is your date of birth (DD/MM/YYYY)?");
             NewClient.Age = CalculateAge(Console.ReadLine());
@@ -46,134 +48,8 @@ namespace LifeInsurance
             NewClient.Children = CaptureChildren(Console.ReadLine());
             Console.WriteLine("");
 
-            // Work out base price.
-            // Start with male customers.
-            double TotalPremium;
-
-            if (NewClient.Gender == "M")
-            {
-                if (NewClient.Age >= 0 && NewClient.Age <= 18)
-                {
-                    TotalPremium = 150.00;
-                }
-                else if (NewClient.Age >= 19 && NewClient.Age <= 24)
-                {
-                    TotalPremium = 180.00;
-                }
-                else if (NewClient.Age >= 25 && NewClient.Age <= 35)
-                {
-                    TotalPremium = 200.00;
-                }
-                else if (NewClient.Age >= 35 && NewClient.Age <= 45)
-                {
-                    TotalPremium = 250.00;
-                }
-                else if (NewClient.Age >= 45 && NewClient.Age <= 60)
-                {
-                    TotalPremium = 320.00;
-                }
-                else
-                {
-                    TotalPremium = 500.00;
-                }
-            }
-
-            //Then look at female customers.
-            else
-            {
-                if (NewClient.Age >= 0 && NewClient.Age <= 18)
-                {
-                    TotalPremium = 100.00;
-                }
-                else if (NewClient.Age >= 19 && NewClient.Age <= 24)
-                {
-                    TotalPremium = 165.00;
-                }
-                else if (NewClient.Age >= 25 && NewClient.Age <= 35)
-                {
-                    TotalPremium = 180.00;
-                }
-                else if (NewClient.Age >= 35 && NewClient.Age <= 45)
-                {
-                    TotalPremium = 225.00;
-                }
-                else if (NewClient.Age >= 45 && NewClient.Age <= 60)
-                {
-                    TotalPremium = 315.00;
-                }
-                else
-                {
-                    TotalPremium = 485.00;
-                }
-            }
-
-            // Adjust Premium based on "Regional Health Index"
-            switch (NewClient.Country)
-            {
-                case "England":
-                    break;
-
-                case "Wales":
-                    TotalPremium = TotalPremium - 100.00;
-                    break;
-
-                case "Scotland":
-                    TotalPremium = TotalPremium + 200.00;
-                    break;
-
-                case "Ireland":
-                    TotalPremium = TotalPremium + 50.00;
-                    break;
-
-                case "Northern Ireland":
-                    TotalPremium = TotalPremium + 75.00;
-                    break;
-
-                default:
-                    TotalPremium = TotalPremium + 100.00;
-                    break;
-            }
-
-            // If client has children increase premium by 50%
-            if (NewClient.Children == "Y")
-            {
-                TotalPremium = TotalPremium * 1.5;
-            }
-
-            // If client is a smoker increase premium by 300%
-            if (NewClient.Smoker == "Y")
-            {
-                TotalPremium = TotalPremium * 4.0;
-            }
-
-            // Adjust premium based on exercise.
-            if (NewClient.HoursOfExercise < 1)
-            {
-                TotalPremium = TotalPremium * 1.2;
-            }
-            else if (NewClient.HoursOfExercise < 3)
-            {
-            }
-            else if (NewClient.HoursOfExercise < 6)
-            {
-                double Deduction = TotalPremium * 0.3;
-                TotalPremium = TotalPremium - Deduction;
-            }
-            else if (NewClient.HoursOfExercise < 9)
-            {
-                double Deduction = TotalPremium * 0.5;
-                TotalPremium = TotalPremium - Deduction;
-            }
-            else if (NewClient.HoursOfExercise >= 9)
-            {
-                TotalPremium = TotalPremium * 1.5;
-            }
-
-            // Check that the final premium is not less then £50, if it is make the premium £50
-            if (TotalPremium < 50.00)
-            {
-                TotalPremium = 50.00;
-            }
+            // Calculate Price
+            double TotalPremium = Calculation.CalculatePrice(NewClient);
 
             // Clear the screen and display Price
             Console.Clear();
@@ -249,8 +125,9 @@ namespace LifeInsurance
             // Ensure screen is displayed.
             Console.ReadLine();
         }
+   
 
-        private static int CalculateAge(String DateOfBirth)
+        public static int CalculateAge(String DateOfBirth)
         {
             bool Redisp = true;
             DateTime dateofbirth;
@@ -275,36 +152,7 @@ namespace LifeInsurance
             return Age;
         }
 
-        private static string CaptureGender(String Gender)
-        {
-            bool Redisplay = true;
-
-            while (Redisplay)
-            {
-                Gender = Gender.ToUpper();
-                switch (Gender)
-                {
-                    case "M":
-                        Redisplay = false;
-                        break;
-
-                    case "F":
-                        Redisplay = false;
-                        break;
-
-                    default:
-                        Redisplay = true;
-                        Console.WriteLine("Please enter M or F.");
-                        Console.WriteLine("What is your gender? (M/F)");
-                        Gender = Console.ReadLine();
-                        break;
-                }
-            }
-
-            return Gender;
-        }
-
-        private static string PostCodeLookup(String PostCodeURL)
+        public static string PostCodeLookup(String PostCodeURL)
         {
             string PostCodeLookupURL = ("https://api.postcodes.io/postcodes/" + PostCodeURL);
             string country = ("");
@@ -314,11 +162,11 @@ namespace LifeInsurance
             wrGETURL.Method = "GET";
             // Setup proxy settings
             WebProxy prox = new WebProxy();
-            Uri uri = new Uri("PROXY ADDRESS");
+            Uri uri = new Uri("http://peg-proxy01:80");
             prox.Address = uri;
             // prox.Credentials = new System.Net.NetworkCredential("USERNAME", "PASSWORD", "INSURANCE");
             wrGETURL.Proxy = prox;
-            
+
             // Make request
 
             try
@@ -348,7 +196,38 @@ namespace LifeInsurance
             return country;
         }
 
-        private static string CaptureSmoker(String Smoker)
+        public static string CaptureGender(String Gender)
+        {
+            bool Redisplay = true;
+
+            while (Redisplay)
+            {
+                Gender = Gender.ToUpper();
+                switch (Gender)
+                {
+                    case "M":
+                        Redisplay = false;
+                        break;
+
+                    case "F":
+                        Redisplay = false;
+                        break;
+
+                    default:
+                        Redisplay = true;
+                        Console.WriteLine("Please enter M or F.");
+                        Console.WriteLine("What is your gender? (M/F)");
+                        Gender = Console.ReadLine();
+                        break;
+                }
+            }
+
+            return Gender;
+        }
+
+
+
+        public static string CaptureSmoker(String Smoker)
         {
             bool Redisplay = true;
 
@@ -376,7 +255,7 @@ namespace LifeInsurance
             return Smoker;
         }
 
-        private static string CaptureExercise(string Exercise)
+        public static string CaptureExercise(string Exercise)
         {
             bool Redisplay = true;
             int exercise;
@@ -397,7 +276,7 @@ namespace LifeInsurance
             return Exercise;
         }
 
-        private static string CaptureChildren(string Children)
+        public static string CaptureChildren(string Children)
         {
             bool Redisplay = true;
 
@@ -424,15 +303,6 @@ namespace LifeInsurance
             }
             return Children;
         }
-    }
-
-    internal class Client
-    {
-        public int Age { get; set; }
-        public string Gender { get; set; }
-        public string Country { get; set; }
-        public string Smoker { get; set; }
-        public int HoursOfExercise { get; set; }
-        public string Children { get; set; }
+                   
     }
 }
